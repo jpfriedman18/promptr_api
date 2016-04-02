@@ -1,4 +1,4 @@
-class PromptsController < ProtectedController
+class PromptsController < ApplicationController
   before_action :set_prompt, only: [:show, :update, :destroy]
 
   # GET /prompts

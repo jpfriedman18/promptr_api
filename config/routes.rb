@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :prompt_responses, except: [:new, :edit]
   resources :prompts, except: [:new, :edit]
   resources :examples, except: [:new, :edit]
   post '/sign-up' => 'users#signup'

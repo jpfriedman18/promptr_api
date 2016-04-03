@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160402202456) do
+ActiveRecord::Schema.define(version: 20160403224428) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,20 +29,14 @@ ActiveRecord::Schema.define(version: 20160402202456) do
     t.text     "text"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer  "user_id"
   end
-
-  add_index "prompt_responses", ["user_id"], name: "index_prompt_responses_on_user_id", using: :btree
 
   create_table "prompts", force: :cascade do |t|
     t.string   "title"
     t.text     "text"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer  "user_id"
   end
-
-  add_index "prompts", ["user_id"], name: "index_prompts_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",           null: false
@@ -50,13 +44,11 @@ ActiveRecord::Schema.define(version: 20160402202456) do
     t.string   "password_digest", null: false
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
-    t.boolean  "teacher"
+    t.boolean  "isTeacher"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["token"], name: "index_users_on_token", unique: true, using: :btree
 
   add_foreign_key "examples", "users"
-  add_foreign_key "prompt_responses", "users"
-  add_foreign_key "prompts", "users"
 end

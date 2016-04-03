@@ -19,16 +19,12 @@ class PromptsController < ApplicationController
   # POST /prompts
   # POST /prompts.json
   def create
-    if current_user.teacher
-      @prompt = current_user.prompts.new(prompt_params)
+    @prompt = Prompt.new(prompt_params)
 
-      if @prompt.save
-        render json: @prompt, status: :created, location: @prompt
-      else
-        render json: @prompt.errors, status: :unprocessable_entity
-      end
+    if @prompt.save
+      render json: @prompt, status: :created, location: @prompt
     else
-      head :unauthorized
+      render json: @prompt.errors, status: :unprocessable_entity
     end
   end
 

@@ -1,5 +1,7 @@
 class PromptResponsesController < ApplicationController
   before_action :set_prompt_response, only: [:show, :update, :destroy]
+  before_action :authenticate, only: [:create, :update, :destroy]
+  before_action :set_student, only: [:create, :update, :destroy]
 
   # GET /prompt_responses
   # GET /prompt_responses.json
@@ -18,12 +20,16 @@ class PromptResponsesController < ApplicationController
   # POST /prompt_responses
   # POST /prompt_responses.json
   def create
-    @prompt_response = PromptResponse.new(prompt_response_params)
+    if @student
+      @prompt_response = PromptResponse.new(prompt_response_params)
 
-    if @prompt_response.save
-      render json: @prompt_response, status: :created, location: @prompt_response
+      if @prompt_response.save
+        render json: @prompt_response, status: :created, location: @prompt_response
+      else
+        render json: @prompt_response.errors, status: :unprocessable_entity
+      end
     else
-      render json: @prompt_response.errors, status: :unprocessable_entity
+      head :unauthorized
     end
   end
 
@@ -53,7 +59,13 @@ class PromptResponsesController < ApplicationController
       @prompt_response = PromptResponse.find(params[:id])
     end
 
+    def set_student
+      if current_user.profileable_type == "Student"
+        @student = current_user.profileable
+      end
+    end
+
     def prompt_response_params
-      params.require(:prompt_response).permit(:text, :user_id)
+      params.require(:prompt_response).permit(:text, :prompt_id)
     end
 end

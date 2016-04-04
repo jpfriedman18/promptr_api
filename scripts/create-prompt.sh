@@ -1,9 +1,9 @@
 curl --include --request POST http://localhost:3000/prompts \
---header "Authorization: Token token=BAhJIiUxZmJlMmViM2MxZGQ3MTQwNzIyMDhjOTYxNmJhNWFkMwY6BkVG--212da58458294dac1d8e0e44c19d22d79305d5ff" \
+--header "Authorization: Token token=BAhJIiVhM2I5YzQ2ZjEyODZmMWQwMWVmNzViNzVlZDUzMDcwOAY6BkVG--b4b780fcdcaf042d5bc249d1f95ec9898dd533cc" \
   --header "Content-Type: application/json" \
   --data '{
     "prompt": {
-      "title": "Im authorized",
-      "text": "yeah"
+      "title": "Im totall not authorized",
+      "text": "ah shit"
     }
   }'

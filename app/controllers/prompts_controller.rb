@@ -20,12 +20,16 @@ class PromptsController < ApplicationController
   # POST /prompts
   # POST /prompts.json
   def create
-    @prompt = @teacher.prompts.new(prompt_params)
+    if @teacher
+      @prompt = @teacher.prompts.new(prompt_params)
 
-    if @prompt.save
-      render json: @prompt, status: :created, location: @prompt
+      if @prompt.save
+        render json: @prompt, status: :created, location: @prompt
+      else
+        render json: @prompt.errors, status: :unprocessable_entity
+      end
     else
-      render json: @prompt.errors, status: :unprocessable_entity
+      head :unauthorized
     end
   end
 
@@ -56,7 +60,9 @@ class PromptsController < ApplicationController
     end
 
     def set_teacher
-      @teacher = current_user.profileable
+      if current_user.profileable_type == "Teacher"
+        @teacher = current_user.profileable
+      end
     end
 
     def prompt_params

@@ -6,13 +6,14 @@ class UsersController < ProtectedController
   def signup
     user = User.create(user_creds)
     if user.valid?
-      render json: user, status: :created
       if user.profileable_type == 'Teacher'
         user.profileable = Teacher.new
         user.save!
+        render json: user, status: :created
       elsif user.profileable_type == "Student"
         user.profileable = Student.new
         user.save!
+        render json: user, status: :created
       end
     else
       head :bad_request

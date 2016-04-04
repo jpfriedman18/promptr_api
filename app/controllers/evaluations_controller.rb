@@ -1,5 +1,7 @@
 class EvaluationsController < ApplicationController
   before_action :set_evaluation, only: [:show, :update, :destroy]
+  before_action :authenticate, only: [:create, :update, :destroy]
+  before_action :set_teacher, only: [:create, :update, :destroy]
 
   # GET /evaluations
   # GET /evaluations.json
@@ -18,12 +20,16 @@ class EvaluationsController < ApplicationController
   # POST /evaluations
   # POST /evaluations.json
   def create
-    @evaluation = Evaluation.new(evaluation_params)
+    if @teacher
+      @evaluation = Evaluation.new(evaluation_params)
 
-    if @evaluation.save
-      render json: @evaluation, status: :created, location: @evaluation
+      if @evaluation.save
+        render json: @evaluation, status: :created, location: @evaluation
+      else
+        render json: @evaluation.errors, status: :unprocessable_entity
+      end
     else
-      render json: @evaluation.errors, status: :unprocessable_entity
+      head :unauthorized
     end
   end
 
@@ -51,6 +57,12 @@ class EvaluationsController < ApplicationController
 
     def set_evaluation
       @evaluation = Evaluation.find(params[:id])
+    end
+
+    def set_teacher
+      if current_user.profileable_type == "Teacher"
+        @teacher = current_user.profileable
+      end
     end
 
     def evaluation_params

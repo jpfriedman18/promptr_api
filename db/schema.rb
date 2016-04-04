@@ -11,10 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160404160732) do
+ActiveRecord::Schema.define(version: 20160404174625) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "evaluations", force: :cascade do |t|
+    t.integer  "grammar"
+    t.integer  "vocabulary"
+    t.integer  "structure"
+    t.integer  "spelling"
+    t.integer  "creativity"
+    t.text     "notes"
+    t.integer  "prompt_response_id"
+    t.integer  "teacher_id"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
+  add_index "evaluations", ["prompt_response_id"], name: "index_evaluations_on_prompt_response_id", using: :btree
+  add_index "evaluations", ["teacher_id"], name: "index_evaluations_on_teacher_id", using: :btree
 
   create_table "examples", force: :cascade do |t|
     t.text     "text",       null: false
@@ -71,6 +87,8 @@ ActiveRecord::Schema.define(version: 20160404160732) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["token"], name: "index_users_on_token", unique: true, using: :btree
 
+  add_foreign_key "evaluations", "prompt_responses"
+  add_foreign_key "evaluations", "teachers"
   add_foreign_key "examples", "users"
   add_foreign_key "prompt_responses", "prompts"
   add_foreign_key "prompt_responses", "students"

@@ -21,7 +21,7 @@ class PromptResponsesController < ApplicationController
   # POST /prompt_responses.json
   def create
     if @student
-      @prompt_response = PromptResponse.new(prompt_response_params)
+      @prompt_response = @student.prompt_responses.new(prompt_response_params)
 
       if @prompt_response.save
         render json: @prompt_response, status: :created, location: @prompt_response

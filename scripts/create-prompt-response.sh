@@ -3,7 +3,7 @@ curl --include --request POST http://localhost:3000/prompt_responses \
   --header "Content-Type: application/json" \
   --data '{
     "prompt_response": {
-      "text": "An essay",
-      "prompt_id": 2
+      "text": "another essay",
+      "prompt_id": 1
     }
   }'

@@ -1,6 +1,7 @@
 class PromptsController < ApplicationController
   before_action :set_prompt, only: [:show, :update, :destroy]
-  before_action :authenticate, only: [:create]
+  before_action :authenticate, only: [:create, :update, :destroy]
+  before_action :set_teacher, only: [:create, :update, :destroy]
 
   # GET /prompts
   # GET /prompts.json
@@ -19,7 +20,7 @@ class PromptsController < ApplicationController
   # POST /prompts
   # POST /prompts.json
   def create
-    @prompt = Prompt.new(prompt_params)
+    @prompt = @teacher.prompts.new(prompt_params)
 
     if @prompt.save
       render json: @prompt, status: :created, location: @prompt
@@ -54,7 +55,11 @@ class PromptsController < ApplicationController
       @prompt = Prompt.find(params[:id])
     end
 
+    def set_teacher
+      @teacher = current_user.profileable
+    end
+
     def prompt_params
-      params.require(:prompt).permit(:title, :text, :user_id)
+      params.require(:prompt).permit(:title, :text)
     end
 end

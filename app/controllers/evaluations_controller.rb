@@ -21,7 +21,7 @@ class EvaluationsController < ApplicationController
   # POST /evaluations.json
   def create
     if @teacher
-      @evaluation = Evaluation.new(evaluation_params)
+      @evaluation = @teacher.evaluations.new(evaluation_params)
 
       if @evaluation.save
         render json: @evaluation, status: :created, location: @evaluation

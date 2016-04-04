@@ -8,7 +8,11 @@ class UsersController < ProtectedController
     if user.valid?
       render json: user, status: :created
       if user.profileable_type == 'Teacher'
-        user.profileable = Teacher.new()
+        user.profileable = Teacher.new
+        user.save!
+      elsif user.profileable_type == "Student"
+        user.profileable = Student.new
+        user.save!
       end
     else
       head :bad_request

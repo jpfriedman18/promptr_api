@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :students, except: [:new, :edit]
   resources :teachers, except: [:new, :edit]
   resources :prompt_responses, except: [:new, :edit]
   resources :prompts, except: [:new, :edit]

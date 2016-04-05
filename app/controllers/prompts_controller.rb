@@ -1,13 +1,16 @@
 class PromptsController < ApplicationController
   before_action :set_prompt, only: [:show, :update, :destroy]
-  before_action :authenticate, only: [:create, :update, :destroy]
-  before_action :set_teacher, only: [:create, :update, :destroy]
+  before_action :authenticate, only: [:create, :index, :update, :destroy]
+  before_action :set_teacher, only: [:create, :index, :update, :destroy]
 
   # GET /prompts
   # GET /prompts.json
   def index
-    @prompts = Prompt.all
-
+    if @teacher
+      @prompts = @teacher.prompts
+    else
+      @prompts = Prompt.all
+    end
     render json: @prompts
   end
 

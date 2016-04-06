@@ -1,5 +1,3 @@
 class EvaluationSerializer < ActiveModel::Serializer
-  attributes :id, :grammar, :vocabulary, :structure, :spelling, :creativity, :notes
-  has_one :prompt_response
-  has_one :teacher
+  attributes :id, :grammar, :vocabulary, :structure, :spelling, :creativity, :notes, :teacher_id, :prompt_response_id
 end

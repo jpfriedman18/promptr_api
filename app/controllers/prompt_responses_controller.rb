@@ -8,6 +8,8 @@ class PromptResponsesController < ApplicationController
   def index
     if @student
       @prompt_responses = @student.prompt_responses
+    else
+      @prompt_responses = PromptResponse.all
     end
 
     render json: @prompt_responses

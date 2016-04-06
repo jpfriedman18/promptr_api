@@ -1,12 +1,14 @@
 class PromptResponsesController < ApplicationController
   before_action :set_prompt_response, only: [:show, :update, :destroy]
-  before_action :authenticate, only: [:create, :update, :destroy]
-  before_action :set_student, only: [:create, :update, :destroy]
+  before_action :authenticate, only: [:create, :index, :update, :destroy]
+  before_action :set_student, only: [:create, :index, :update, :destroy]
 
   # GET /prompt_responses
   # GET /prompt_responses.json
   def index
-    @prompt_responses = PromptResponse.all
+    if @student
+      @prompt_responses = @student.prompt_responses
+    end
 
     render json: @prompt_responses
   end

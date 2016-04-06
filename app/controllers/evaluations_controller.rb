@@ -1,12 +1,18 @@
 class EvaluationsController < ApplicationController
   before_action :set_evaluation, only: [:show, :update, :destroy]
-  before_action :authenticate, only: [:create, :update, :destroy]
-  before_action :set_teacher, only: [:create, :update, :destroy]
+  before_action :authenticate, only: [:create, :index, :update, :destroy]
+  before_action :set_teacher, only: [:create, :index, :update, :destroy]
 
   # GET /evaluations
   # GET /evaluations.json
   def index
-    @evaluations = Evaluation.all
+    if @teacher
+      @evaluations = @teacher.evaluations
+    else
+      student_responses = @student.prompt_responses
+      @evaluations = []
+      student_responses.each {|prompt_response| @evaluations.push(prompt_response)}
+    end
 
     render json: @evaluations
   end
@@ -62,6 +68,8 @@ class EvaluationsController < ApplicationController
     def set_teacher
       if current_user.profileable_type == "Teacher"
         @teacher = current_user.profileable
+      else
+        @student = current_user.profileable
       end
     end
 

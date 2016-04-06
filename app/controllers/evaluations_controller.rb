@@ -9,9 +9,11 @@ class EvaluationsController < ApplicationController
     if @teacher
       @evaluations = @teacher.evaluations
     else
-      student_responses = @student.prompt_responses
-      @evaluations = []
-      student_responses.each {|prompt_response| @evaluations.push(prompt_response)}
+      # student_responses = @student.prompt_responses
+      # @evaluations = []
+      # student_responses.each {|prompt_response| @evaluations.push(prompt_response.evaluation)}
+
+      @evaluations = @student.evaluations
     end
 
     render json: @evaluations

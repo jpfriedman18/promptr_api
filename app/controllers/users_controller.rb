@@ -7,11 +7,11 @@ class UsersController < ProtectedController
     user = User.create(user_creds)
     if user.valid?
       if user.profileable_type == 'Teacher'
-        user.profileable = Teacher.new
+        user.profileable = Teacher.new({name: user.name})
         user.save!
         render json: user, status: :created
       elsif user.profileable_type == "Student"
-        user.profileable = Student.new
+        user.profileable = Student.new({name: user.name})
         user.save!
         render json: user, status: :created
       end
@@ -69,7 +69,7 @@ class UsersController < ProtectedController
 
   def user_creds
     params.require(:credentials)
-          .permit(:email, :password, :password_confirmation, :profileable_type)
+          .permit(:email, :password, :password_confirmation, :profileable_type, :name)
   end
 
   def pw_creds
